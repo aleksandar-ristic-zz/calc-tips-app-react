@@ -1,9 +1,36 @@
 import { useState } from 'react'
 
 function App() {
-	const [inputTotal, setInputTotal] = useState(1)
-	const [inputCustom, setInputCustom] = useState(1)
-	const [inputPeople, setInputPeople] = useState(1)
+	const [inputTotal, setInputTotal] = useState('')
+	const [inputCustom, setInputCustom] = useState('')
+	const [inputPeople, setInputPeople] = useState('')
+
+	const tipCalc = () => (inputTotal / 100) * inputCustom
+	const checkValues = () =>
+		!inputTotal || !inputCustom || !inputPeople ? true : false
+	const checkZero = () =>
+		inputTotal <= 0 || inputCustom <= 0 || inputPeople <= 0 ? true : false
+
+	const tipAmount = () => {
+		if (checkValues() || checkZero()) return `$0.00`
+
+		const tipFull = tipCalc()
+		const tipPerPerson = (tipFull / inputPeople).toFixed(2)
+
+		return tipPerPerson
+	}
+
+	const totalPerPerson = () => {
+		if (checkValues() || checkZero()) return `$0.00`
+
+		const tipFull = parseInt(tipCalc())
+		const totalPerPerson = (
+			(parseInt(inputTotal) + tipFull) /
+			inputPeople
+		).toFixed(2)
+
+		return totalPerPerson
+	}
 
 	return (
 		<>
@@ -87,14 +114,14 @@ function App() {
 								<h3>Tip Amount</h3>
 								<span>/ person</span>
 							</div>
-							<h2 className='tip-amount'>$0.00</h2>
+							<h2 className='tip-amount'>{tipAmount()}</h2>
 						</div>
 						<div className='w-100'>
 							<div className='left'>
 								<h3>Total</h3>
 								<span>/ person</span>
 							</div>
-							<h2 className='total-amount'>$0.00</h2>
+							<h2 className='total-amount'>{totalPerPerson()}</h2>
 						</div>
 					</div>
 
@@ -105,7 +132,7 @@ function App() {
 			</div>
 
 			<div className='attribution'>
-				Challenge by
+				Challenge by{' '}
 				<a
 					href='https://www.frontendmentor.io?ref=challenge'
 					rel='noreferrer'
@@ -113,7 +140,7 @@ function App() {
 				>
 					Frontend Mentor
 				</a>
-				. Coded by
+				. Coded by{' '}
 				<a
 					href='https://github.com/aleksandar-ristic'
 					rel='noreferrer'
