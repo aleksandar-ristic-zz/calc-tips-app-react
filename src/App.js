@@ -5,6 +5,9 @@ function App() {
 	const [inputCustom, setInputCustom] = useState('')
 	const [inputPeople, setInputPeople] = useState('')
 
+	const checkInput = custom =>
+		['5', '10', '15', '25', '50'].filter(radio => radio === custom)
+
 	const tipCalc = () => (inputTotal / 100) * inputCustom
 	const checkValues = () =>
 		!inputTotal || !inputCustom || !inputPeople ? true : false
@@ -17,7 +20,7 @@ function App() {
 		const tipFull = tipCalc()
 		const tipPerPerson = (tipFull / inputPeople).toFixed(2)
 
-		return tipPerPerson
+		return `$${tipPerPerson}`
 	}
 
 	const totalPerPerson = () => {
@@ -29,7 +32,7 @@ function App() {
 			inputPeople
 		).toFixed(2)
 
-		return totalPerPerson
+		return `$${totalPerPerson}`
 	}
 
 	return (
@@ -61,31 +64,78 @@ function App() {
 							Select Tip % <span className='custom-error'></span>
 						</p>
 						<div className='grid-container'>
-							<label htmlFor='5%'>
+							<label
+								htmlFor='5%'
+								className={inputCustom === '5' ? 'checked' : ''}
+							>
 								5%
-								<input type='radio' value='5' name='tip-percent' id='5%' />
+								<input
+									type='radio'
+									value='5'
+									name='tip-percent'
+									id='5%'
+									onChange={e => setInputCustom(e.target.value)}
+								/>
 							</label>
-							<label htmlFor='10%'>
+							<label
+								htmlFor='10%'
+								className={inputCustom === '10' ? 'checked' : ''}
+							>
 								10%
-								<input type='radio' value='10' name='tip-percent' id='10%' />
+								<input
+									type='radio'
+									value='10'
+									name='tip-percent'
+									id='10%'
+									onChange={e => setInputCustom(e.target.value)}
+								/>
 							</label>
-							<label htmlFor='15%'>
+							<label
+								htmlFor='15%'
+								className={inputCustom === '15' ? 'checked' : ''}
+							>
 								15%
-								<input type='radio' value='15' name='tip-percent' id='15%' />
+								<input
+									type='radio'
+									value='15'
+									name='tip-percent'
+									id='15%'
+									onChange={e => setInputCustom(e.target.value)}
+								/>
 							</label>
-							<label htmlFor='25%'>
+							<label
+								htmlFor='25%'
+								className={inputCustom === '25' ? 'checked' : ''}
+							>
 								25%
-								<input type='radio' value='25' name='tip-percent' id='25%' />
+								<input
+									type='radio'
+									value='25'
+									name='tip-percent'
+									id='25%'
+									onChange={e => setInputCustom(e.target.value)}
+									checked={inputCustom === '25'}
+								/>
 							</label>
-							<label htmlFor='50%'>
+							<label
+								htmlFor='50%'
+								className={inputCustom === '50' ? 'checked' : ''}
+							>
 								50%
-								<input type='radio' value='50' name='tip-percent' id='50%' />
+								<input
+									type='radio'
+									value='50'
+									name='tip-percent'
+									id='50%'
+									onChange={e => setInputCustom(e.target.value)}
+								/>
 							</label>
 							<input
 								className='custom-input'
 								type='number'
 								placeholder='Custom'
-								value={inputCustom}
+								value={checkInput(inputCustom).length > 0 ? '' : inputCustom}
+								maxLength='3'
 								onChange={e => setInputCustom(e.target.value)}
 							/>
 						</div>
@@ -114,7 +164,13 @@ function App() {
 								<h3>Tip Amount</h3>
 								<span>/ person</span>
 							</div>
-							<h2 className='tip-amount'>{tipAmount()}</h2>
+							<h2
+								className={
+									'tip-amount' + tipAmount() === '$0.00' ? '' : 'active'
+								}
+							>
+								{tipAmount()}
+							</h2>
 						</div>
 						<div className='w-100'>
 							<div className='left'>

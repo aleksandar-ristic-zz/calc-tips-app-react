@@ -157,7 +157,8 @@ h1 {
 	background-color: var(--veryDarkCyan);
 	transition: all 0.3s ease;
 }
-.input-container .w-100 .grid-container label.checked {
+.input-container .w-100 .grid-container label.checked,
+.input-container .w-100 .grid-container input:checked {
 	color: var(--veryDarkCyan);
 	background-color: var(--lightGrayishCyanL);
 }
