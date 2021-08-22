@@ -6,8 +6,9 @@ function App() {
 	const [inputPeople, setInputPeople] = useState('')
 
 	const checkInput = custom =>
-		['5', '10', '15', '25', '50'].filter(radio => radio === custom)
+		['5.00001', '10', '15', '25', '50'].filter(radio => radio === custom)
 
+	// tip operations
 	const tipCalc = () => (inputTotal / 100) * inputCustom
 	const checkValues = () =>
 		!inputTotal || !inputCustom || !inputPeople ? true : false
@@ -15,7 +16,7 @@ function App() {
 		inputTotal <= 0 || inputCustom <= 0 || inputPeople <= 0 ? true : false
 
 	const tipAmount = () => {
-		if (checkValues() || checkZero()) return `$0.00`
+		if (checkValues() || checkZero()) return '$0.00'
 
 		const tipFull = tipCalc()
 		const tipPerPerson = (tipFull / inputPeople).toFixed(2)
@@ -24,7 +25,7 @@ function App() {
 	}
 
 	const totalPerPerson = () => {
-		if (checkValues() || checkZero()) return `$0.00`
+		if (checkValues() || checkZero()) return '$0.00'
 
 		const tipFull = parseInt(tipCalc())
 		const totalPerPerson = (
@@ -45,12 +46,17 @@ function App() {
 				<div className='input-container'>
 					<div className='w-100'>
 						<p>
-							Bill <span className='total-error'></span>
+							Bill{' '}
+							<span
+								className={`total-error ${inputTotal === '0' ? 'active' : ''}`}
+							>
+								{inputTotal === '0' ? "Can't be zero." : ''}
+							</span>
 						</p>
 						<div className='input-wrapper'>
 							<img src='images/icon-dollar.svg' alt='dollar' />
 							<input
-								className='total-input'
+								className={`total-input ${inputTotal === '0' ? 'error' : ''}`}
 								placeholder='0'
 								type='number'
 								value={inputTotal}
@@ -66,15 +72,20 @@ function App() {
 						<div className='grid-container'>
 							<label
 								htmlFor='5%'
-								className={inputCustom === '5' ? 'checked' : ''}
+								className={
+									inputCustom === '5.00001' || inputCustom === '5'
+										? 'checked'
+										: ''
+								}
 							>
 								5%
 								<input
 									type='radio'
-									value='5'
+									value='5.00001'
 									name='tip-percent'
 									id='5%'
 									onChange={e => setInputCustom(e.target.value)}
+									checked={inputCustom === '5.00001' || inputCustom === '5'}
 								/>
 							</label>
 							<label
@@ -88,6 +99,7 @@ function App() {
 									name='tip-percent'
 									id='10%'
 									onChange={e => setInputCustom(e.target.value)}
+									checked={inputCustom === '10'}
 								/>
 							</label>
 							<label
@@ -101,6 +113,7 @@ function App() {
 									name='tip-percent'
 									id='15%'
 									onChange={e => setInputCustom(e.target.value)}
+									checked={inputCustom === '15'}
 								/>
 							</label>
 							<label
@@ -128,6 +141,7 @@ function App() {
 									name='tip-percent'
 									id='50%'
 									onChange={e => setInputCustom(e.target.value)}
+									checked={inputCustom === '50'}
 								/>
 							</label>
 							<input
@@ -164,11 +178,7 @@ function App() {
 								<h3>Tip Amount</h3>
 								<span>/ person</span>
 							</div>
-							<h2
-								className={
-									'tip-amount' + tipAmount() === '$0.00' ? '' : 'active'
-								}
-							>
+							<h2 className={tipAmount() === '$0.00' ? '' : 'active'}>
 								{tipAmount()}
 							</h2>
 						</div>
@@ -177,7 +187,9 @@ function App() {
 								<h3>Total</h3>
 								<span>/ person</span>
 							</div>
-							<h2 className='total-amount'>{totalPerPerson()}</h2>
+							<h2 className={totalPerPerson() === '$0.00' ? '' : 'active'}>
+								{totalPerPerson()}
+							</h2>
 						</div>
 					</div>
 
