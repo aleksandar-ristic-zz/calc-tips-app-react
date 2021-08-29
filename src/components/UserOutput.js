@@ -1,4 +1,4 @@
-export default function UserOutput({ tipAmount, totalPerPerson }) {
+function UserOutput({ tipAmount, totalPerPerson, resetInput }) {
 	return (
 		<div className='output-container'>
 			<div className='top'>
@@ -20,9 +20,15 @@ export default function UserOutput({ tipAmount, totalPerPerson }) {
 				</div>
 			</div>
 
-			<button className='reset-btn' disabled>
+			<button
+				className='reset-btn'
+				disabled={totalPerPerson === '$0.00'}
+				onClick={() => resetInput()}
+			>
 				reset
 			</button>
 		</div>
 	)
 }
+
+export default UserOutput

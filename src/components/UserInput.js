@@ -1,45 +1,21 @@
-import { useState } from 'react'
 import Error from './Error'
 
-function UserInput({ tipAmount, totalPerPerson }) {
-	const [inputTotal, setInputTotal] = useState('')
-	const [inputCustom, setInputCustom] = useState('')
-	const [inputPeople, setInputPeople] = useState('')
-
+function UserInput({
+	inputTotal,
+	changeInputTotal,
+	inputCustom,
+	changeInputCustom,
+	inputPeople,
+	changeInputPeople
+}) {
 	const checkInput = custom =>
 		['5.00001', '10', '15', '25', '50'].filter(radio => radio === custom)
-
-	// tip operations
-	const tipCalc = () => (inputTotal / 100) * inputCustom
-
-	const checkValues = () =>
-		!inputTotal || !inputCustom || !inputPeople ? true : false
-	const checkZero = () =>
-		inputTotal <= 0 || inputCustom <= 0 || inputPeople <= 0 ? true : false
-
-	if (checkValues() || checkZero()) {
-		tipAmount('$0.00')
-		totalPerPerson('$0.00')
-	} else {
-		const tipFull = parseInt(tipCalc())
-		const tipPerPerson = (tipFull / inputPeople).toFixed(2)
-		const totalPerPerson = (
-			(parseInt(inputTotal) + tipFull) /
-			inputPeople
-		).toFixed(2)
-
-		tipAmount(`$${tipPerPerson}`)
-		totalPerPerson(`$${totalPerPerson}`)
-	}
 
 	return (
 		<div className='input-container'>
 			<div className='w-100'>
 				<p>
-					Bill{' '}
-					<span className={inputTotal === '0' ? 'active' : ''}>
-						{inputTotal === '0' ? "Can't be zero." : ''}
-					</span>
+					Bill <Error input={inputTotal} />
 				</p>
 				<div className='input-wrapper'>
 					<img src='images/icon-dollar.svg' alt='dollar' />
@@ -48,7 +24,7 @@ function UserInput({ tipAmount, totalPerPerson }) {
 						placeholder='0'
 						type='number'
 						value={inputTotal}
-						onChange={e => setInputTotal(e.target.value)}
+						onChange={e => changeInputTotal(e.target.value)}
 					/>
 				</div>
 			</div>
@@ -70,7 +46,7 @@ function UserInput({ tipAmount, totalPerPerson }) {
 							value='5.00001'
 							name='tip-percent'
 							id='5%'
-							onChange={e => setInputCustom(e.target.value)}
+							onChange={e => changeInputCustom(e.target.value)}
 							checked={inputCustom === '5.00001' || inputCustom === '5'}
 						/>
 					</label>
@@ -84,7 +60,7 @@ function UserInput({ tipAmount, totalPerPerson }) {
 							value='10'
 							name='tip-percent'
 							id='10%'
-							onChange={e => setInputCustom(e.target.value)}
+							onChange={e => changeInputCustom(e.target.value)}
 							checked={inputCustom === '10'}
 						/>
 					</label>
@@ -98,7 +74,7 @@ function UserInput({ tipAmount, totalPerPerson }) {
 							value='15'
 							name='tip-percent'
 							id='15%'
-							onChange={e => setInputCustom(e.target.value)}
+							onChange={e => changeInputCustom(e.target.value)}
 							checked={inputCustom === '15'}
 						/>
 					</label>
@@ -112,7 +88,7 @@ function UserInput({ tipAmount, totalPerPerson }) {
 							value='25'
 							name='tip-percent'
 							id='25%'
-							onChange={e => setInputCustom(e.target.value)}
+							onChange={e => changeInputCustom(e.target.value)}
 							checked={inputCustom === '25'}
 						/>
 					</label>
@@ -126,17 +102,17 @@ function UserInput({ tipAmount, totalPerPerson }) {
 							value='50'
 							name='tip-percent'
 							id='50%'
-							onChange={e => setInputCustom(e.target.value)}
+							onChange={e => changeInputCustom(e.target.value)}
 							checked={inputCustom === '50'}
 						/>
 					</label>
 					<input
-						className='custom-input'
+						className={`custom-input ${inputCustom === '0' ? 'error' : ''}`}
 						type='number'
 						placeholder='Custom'
 						value={checkInput(inputCustom).length > 0 ? '' : inputCustom}
 						maxLength='3'
-						onChange={e => setInputCustom(e.target.value)}
+						onChange={e => changeInputCustom(e.target.value)}
 					/>
 				</div>
 			</div>
@@ -148,11 +124,11 @@ function UserInput({ tipAmount, totalPerPerson }) {
 				<div className='input-wrapper'>
 					<img src='/images/icon-person.svg' alt='dollar' />
 					<input
-						className='people-input'
+						className={`people-input ${inputPeople === '0' ? 'error' : ''}`}
 						placeholder='0'
 						type='number'
 						value={inputPeople}
-						onChange={e => setInputPeople(e.target.value)}
+						onChange={e => changeInputPeople(e.target.value)}
 					/>
 				</div>
 			</div>
