@@ -9,7 +9,7 @@ function App() {
 	const [inputCustom, setInputCustom] = useState('')
 	const [inputPeople, setInputPeople] = useState('')
 
-	// tip operations
+	// tip calculations
 	const tipCalc = () => (inputTotal / 100) * inputCustom
 
 	const checkValues = () =>
@@ -21,9 +21,9 @@ function App() {
 		if (checkValues() || checkZero()) return '$0.00'
 
 		const tipFull = parseInt(tipCalc())
-		const tipPerOnePerson = (tipFull / inputPeople).toFixed(2)
+		const tipPerPerson = (tipFull / inputPeople).toFixed(2)
 
-		return `$${tipPerOnePerson}`
+		return `$${tipPerPerson}`
 	}
 
 	const totalPerPerson = () => {
